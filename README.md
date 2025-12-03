@@ -1,5 +1,7 @@
 # Business Website Template (FastAPI + React + Docker)
 
+<img width="1728" height="990" alt="Screenshot 2025-12-02 at 9 35 31 PM" src="https://github.com/user-attachments/assets/cb907301-d13e-40de-9c13-2045d5158591" />
+
 This repository contains a fully functional **business website** template featuring:
 
 - **React + Vite frontend**
