@@ -13,15 +13,14 @@ export interface ContentContextValue {
   content: SiteContent | null;
   loading: boolean;
   error: string | null;
-  reload: () => void;
+  reload: () => void; // ← back to void
 }
 
-// ✅ Exported so AdminReviewPage (and others) can override it
 export const ContentContext = createContext<ContentContextValue | undefined>(
   undefined
 );
 
-// ✅ Fallback content that satisfies the strict SiteContent type
+// Fallback content that satisfies the strict SiteContent type
 const FALLBACK_CONTENT: SiteContent = {
   hero: {
     headline: "Helping clients build modern solutions.",
@@ -29,6 +28,7 @@ const FALLBACK_CONTENT: SiteContent = {
       "We help organizations move from fragile, legacy systems to secure, zero-trust architectures.",
     primaryCtaLabel: "Get in touch",
     primaryCtaHref: "/contact",
+    layoutVariant: "classic", // ← default
   },
   about: {
     title: "About Us",
@@ -77,18 +77,23 @@ const FALLBACK_CONTENT: SiteContent = {
   },
 };
 
-// ✅ Normalize anything the backend sends into a full SiteContent object
+// Normalize anything the backend sends into a full SiteContent object
 function normalizeContent(raw: any): SiteContent {
   const src = raw ?? {};
+  const rawHero = src.hero ?? {};
 
   return {
     hero: {
-      headline: src.hero?.headline ?? FALLBACK_CONTENT.hero.headline,
-      subheadline: src.hero?.subheadline ?? FALLBACK_CONTENT.hero.subheadline,
+      // carry through any extra fields like layoutVariant, secondary CTA, etc.
+      ...rawHero,
+      headline: rawHero.headline ?? FALLBACK_CONTENT.hero.headline,
+      subheadline: rawHero.subheadline ?? FALLBACK_CONTENT.hero.subheadline,
       primaryCtaLabel:
-        src.hero?.primaryCtaLabel ?? FALLBACK_CONTENT.hero.primaryCtaLabel,
+        rawHero.primaryCtaLabel ?? FALLBACK_CONTENT.hero.primaryCtaLabel,
       primaryCtaHref:
-        src.hero?.primaryCtaHref ?? FALLBACK_CONTENT.hero.primaryCtaHref,
+        rawHero.primaryCtaHref ?? FALLBACK_CONTENT.hero.primaryCtaHref,
+      layoutVariant:
+        rawHero.layoutVariant ?? FALLBACK_CONTENT.hero.layoutVariant,
     },
     about: {
       title: src.about?.title ?? FALLBACK_CONTENT.about.title,
@@ -131,11 +136,12 @@ export const ContentProvider = ({ children }: { children: ReactNode }) => {
         setContent(normalizeContent(data));
       })
       .catch((err: any) => {
-        setError(err.message || "Failed to load content");
-        // still give callers something to render
+        setError(err?.message || "Failed to load content");
         setContent(FALLBACK_CONTENT);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useEffect(() => {

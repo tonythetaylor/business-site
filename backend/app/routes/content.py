@@ -1,9 +1,10 @@
 # backend/app/routes/content.py
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Literal
 import json
 
 from fastapi import APIRouter, Depends, Header, HTTPException
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from ...database import get_db
@@ -14,6 +15,11 @@ from ..services.content_service import (
 )
 from ...models import ContentVersion
 
+HomeLayoutVariant = Literal["classic", "sleek"]
+
+class HomeLayoutUpdate(BaseModel):
+    layoutVariant: HomeLayoutVariant
+    
 router = APIRouter(tags=["content"])  # no prefix
 
 
@@ -86,3 +92,38 @@ def rollback_content(
     return {
         "detail": f"Rolled back to version {version}. New version {new_version} created."
     }
+    
+@router.get("/admin/home-layout", response_model=HomeLayoutUpdate)
+def get_home_layout(
+    _: None = Depends(verify_admin_api_key),
+    db: Session = Depends(get_db),
+):
+    """
+    Admin: get the current homepage layout variant.
+    """
+    content = load_content_from_db(db)
+    hero = content.get("hero") or {}
+    layout = hero.get("layoutVariant", "classic")
+    if layout not in ("classic", "sleek"):
+        layout = "classic"
+    return HomeLayoutUpdate(layoutVariant=layout)
+
+
+@router.put("/admin/home-layout", response_model=HomeLayoutUpdate)
+def update_home_layout(
+    update: HomeLayoutUpdate,
+    _: None = Depends(verify_admin_api_key),
+    db: Session = Depends(get_db),
+):
+    """
+    Admin: update only the homepage layout variant, preserving the rest of the content.
+    """
+    content = load_content_from_db(db)
+    hero = content.get("hero") or {}
+    hero["layoutVariant"] = update.layoutVariant
+    content["hero"] = hero
+
+    # Save as a new ContentVersion row
+    save_content_to_db(db, content)
+
+    return update

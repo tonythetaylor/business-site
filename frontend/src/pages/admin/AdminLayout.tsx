@@ -1,5 +1,6 @@
 import { Outlet, Navigate, NavLink, useNavigate } from "react-router-dom";
 import { AdminDraftProvider } from "../../contexts/AdminDraftContext";
+import AdminHomeLayoutToggle from "../../components/admin/AdminHomeLayoutToggle";
 
 const navItems = [
   { to: "/admin/hero", label: "Hero" },
@@ -84,6 +85,7 @@ export default function AdminLayout() {
         <main className="flex-1 px-8 py-10 overflow-y-auto bg-slate-50 dark:bg-slate-950">
           <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 shadow-sm">
             <Outlet />
+            <AdminHomeLayoutToggle />
           </div>
         </main>
       </div>

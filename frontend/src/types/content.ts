@@ -1,6 +1,4 @@
-// src/api/content.ts
-
-import { apiClient } from "./client";
+// frontend/src/api/content.ts
 
 export type HomeLayoutVariant = "classic" | "sleek";
 
@@ -9,19 +7,25 @@ export interface HeroContent {
   subheadline?: string;
   primaryCtaLabel?: string;
   primaryCtaHref?: string;
+
+  // New optional fields
   secondaryCtaLabel?: string;
   secondaryCtaHref?: string;
-  layoutVariant?: HomeLayoutVariant;
-}
 
-export interface AboutContent {
-  title: string;
-  body: string[];
+  // Controls which homepage layout is active
+  layoutVariant?: HomeLayoutVariant;
 }
 
 export interface ServiceItem {
   title: string;
   description: string;
+  // optional, used in the sleek layout card
+  tagline?: string;
+}
+
+export interface AboutContent {
+  title: string;
+  body: string[];
 }
 
 export interface CareerPosition {
@@ -48,25 +52,4 @@ export interface SiteContent {
   services: ServiceItem[];
   careers: CareersContent;
   contact: ContactContent;
-}
-
-export async function fetchContent(): Promise<SiteContent> {
-  const res = await apiClient.get<SiteContent>("/api/content");
-  return res.data;
-}
-
-export async function updateContent(
-  newContent: SiteContent,
-  apiKey: string
-): Promise<{ detail: string }> {
-  const res = await apiClient.put<{ detail: string }>(
-    "/api/content",
-    newContent,
-    {
-      headers: {
-        "X-API-Key": apiKey,
-      },
-    }
-  );
-  return res.data;
 }

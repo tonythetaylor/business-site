@@ -20,6 +20,12 @@ def get_default_content() -> Dict[str, Any]:
             "subheadline": "Short value prop about what the business actually does.",
             "primaryCtaLabel": "Get in touch",
             "primaryCtaHref": "/contact",
+            # NEW: optional secondary CTA used by the sleek layout
+            "secondaryCtaLabel": "View services",
+            "secondaryCtaHref": "/services",
+            # NEW: which homepage layout to use by default
+            # "classic" or "sleek"
+            "layoutVariant": "classic",
         },
         "about": {
             "title": "About Us",
@@ -32,14 +38,18 @@ def get_default_content() -> Dict[str, Any]:
             {
                 "title": "Service One",
                 "description": "Short description of service one.",
+                # NEW: tagline used in the sleek layout (falls back to 'Service')
+                "tagline": "Advisory",
             },
             {
                 "title": "Service Two",
                 "description": "Short description of service two.",
+                "tagline": "Engineering",
             },
             {
                 "title": "Service Three",
                 "description": "Short description of service three.",
+                "tagline": "Operations",
             },
         ],
         "careers": {

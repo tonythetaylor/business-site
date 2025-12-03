@@ -140,7 +140,6 @@ export default function AdminReviewPage() {
             onClick={handlePublish}
             disabled={publishing}
             className="inline-flex items-center justify-center rounded-full bg-indigo-600 px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 disabled:opacity-60 dark:bg-indigo-500 dark:hover:bg-indigo-400"
-    
           >
             {publishing ? "Publishing…" : "Publish changes"}
           </button>
