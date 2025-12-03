@@ -2,7 +2,7 @@
 
 import { apiClient } from "./client";
 
-export type HomeLayoutVariant = "classic" | "sleek";
+export type HomeLayoutVariant = "classic" | "sleek" | "blockchain" | "studio" | "river";
 
 export interface HeroContent {
   headline: string;

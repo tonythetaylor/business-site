@@ -1,8 +1,10 @@
+import BlockchainHomeLayout from "../components/home/BlockchainHomeLayout";
 import ClassicHomeLayout from "../components/home/ClassicHomeLayout";
+import RiverHomeLayout from "../components/home/RiverHomeLayout";
 import SleekHomeLayout from "../components/home/SleekHomeLayout";
+import StudioHomeLayout from "../components/home/StudioHomeLayout";
 import { useContent } from "../contexts/ContentContext";
 import type { HeroContent, ServiceItem } from "../types/content";
-
 
 export default function HomePage() {
   const { content, loading, error } = useContent();
@@ -34,6 +36,12 @@ export default function HomePage() {
 
   return layoutVariant === "sleek" ? (
     <SleekHomeLayout hero={hero} services={services} />
+  ) : layoutVariant === "blockchain" ? (
+    <BlockchainHomeLayout hero={hero} services={services} />
+  ) : layoutVariant === "studio" ? (
+    <StudioHomeLayout hero={hero} services={services} />
+  ) : layoutVariant === "river" ? (
+    <RiverHomeLayout hero={hero} services={services} />
   ) : (
     <ClassicHomeLayout hero={hero} services={services} />
   );

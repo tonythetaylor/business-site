@@ -1,6 +1,6 @@
 // frontend/src/api/content.ts
 
-export type HomeLayoutVariant = "classic" | "sleek";
+export type HomeLayoutVariant = "classic" | "sleek" | "blockchain" | "studio" | "river";
 
 export interface HeroContent {
   headline: string;

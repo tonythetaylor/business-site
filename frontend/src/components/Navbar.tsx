@@ -1,7 +1,10 @@
+// frontend/src/components/Navbar.tsx
 import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
+import { useContent } from "../contexts/ContentContext";
+import type { HomeLayoutVariant } from "../types/content";
 
 // 🔹 Generic business branding (change these for a real client)
 const BRAND_INITIALS = "BT"; // e.g. "AC" for "Acme Corp"
@@ -53,6 +56,18 @@ export default function Navbar() {
   const location = useLocation();
   const isHome = location.pathname === "/";
 
+  const { content } = useContent();
+  const layoutVariant = (content?.hero as any)
+    ?.layoutVariant as HomeLayoutVariant | undefined;
+
+  // Full-width chrome only for these variants
+  const isFullWidth =
+    layoutVariant === "blockchain" || layoutVariant === "studio";
+
+  const innerClass = isFullWidth
+    ? "flex w-full items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8"
+    : "mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8";
+
   // Close mobile drawer on route change
   useEffect(() => {
     setOpen(false);
@@ -70,7 +85,7 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className={innerClass}>
           {/* Brand */}
           <NavLink to="/" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-xs font-bold text-white dark:bg-indigo-500">
