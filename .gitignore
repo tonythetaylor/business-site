@@ -1,0 +1,159 @@
+# -----------------------------------------------------
+# Root Git Ignore for Business Website (Frontend + Backend)
+# -----------------------------------------------------
+
+##########  
+# OS / Editor Junk  
+##########
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+*.lock
+
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+##########  
+# Logs  
+##########
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+backend/*.log
+
+##########  
+# Environment / Secrets  
+##########
+.env
+.env.*
+*.env
+secrets/
+vault-data/
+vault-backup/
+
+# Custom Vault engine
+vault/
+vault.json
+vault.db
+vault.key
+
+##########  
+# FRONTEND (React / Vite)  
+##########
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+vite.config.timestamp.json
+
+##########  
+# BACKEND (FastAPI / Python)  
+##########
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+
+# Databases (local)
+*.db
+*.sqlite
+*.sqlite3
+
+# Virtual environments
+venv/
+env/
+.venv/
+backend/venv/
+backend/.venv/
+
+# FastAPI / Python caches
+backend/.mypy_cache/
+backend/.pytest_cache/
+backend/.ruff_cache/
+backend/.coverage
+coverage.xml
+htmlcov/
+
+##########  
+# MEDIA / UPLOADS  
+##########
+# Never commit user uploads (resumes, images, private media)
+uploads/
+backend/app/uploads/
+backend/app/private_media/
+backend/app/public_media/
+
+# In case Docker mounts map here
+private_media/
+public_media/
+
+##########  
+# Docker  
+##########
+*.pid
+docker-data/
+postgres-data/
+pgdata/
+*.tar
+
+# Ignoring override files and backup Dockerfiles
+docker-compose.override.yml
+**/Dockerfile~*
+
+##########  
+# Prisma / DB (if used)  
+##########
+backend/prisma/dev.db
+backend/prisma/migrations/**/migration_lock.toml
+backend/prisma/generated/
+backend/node_modules/
+
+##########  
+# NGINX  
+##########
+nginx/.temp/
+nginx/cache/
+nginx/logs/
+nginx/conf.d/*~
+nginx/*.swp
+
+##########  
+# TypeScript / Build  
+##########
+*.tsbuildinfo
+*.out
+
+##########  
+# Testing  
+##########
+coverage/
+test-results/
+cypress/videos/
+cypress/screenshots/
+
+##########  
+# macOS  
+##########
+.AppleDouble
+.LSOverride
+
+##########  
+# Misc  
+##########
+scratch/
+backup/
+temp/
+tmp/
