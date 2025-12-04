@@ -7,13 +7,13 @@ import {
   type ReactNode,
 } from "react";
 
-import { fetchContent, type SiteContent } from "../api/content";
+import { fetchContent, type SiteContent, type CareerPosition } from "../api/content";
 
 export interface ContentContextValue {
   content: SiteContent | null;
   loading: boolean;
   error: string | null;
-  reload: () => void; // ← back to void
+  reload: () => void;
 }
 
 export const ContentContext = createContext<ContentContextValue | undefined>(
@@ -21,6 +21,35 @@ export const ContentContext = createContext<ContentContextValue | undefined>(
 );
 
 // Fallback content that satisfies the strict SiteContent type
+const FALLBACK_POSITIONS: CareerPosition[] = [
+  {
+    id: "fallback-software-engineer",
+    title: "Software Engineer",
+    summary:
+      "Build modern cloud-native applications using Python, React, and DevSecOps best practices.",
+    tags: ["Cloud", "DevSecOps", "Backend", "Full-Stack"],
+    team: "Engineering",
+    location: "Remote (US)",
+    workMode: "remote",
+    level: "Mid–Senior",
+    tagline: "Modern full-stack delivery",
+    salaryRange: "$120k–$150k USD",
+  },
+  {
+    id: "fallback-general-application",
+    title: "General Application",
+    summary:
+      "If your skillset doesn’t fit a listed role, submit a general application.",
+    tags: ["General"],
+    team: "General",
+    location: "Remote (US)",
+    workMode: "remote",
+    level: "All levels",
+    tagline: "Tell us how you fit",
+    salaryRange: undefined,
+  },
+];
+
 const FALLBACK_CONTENT: SiteContent = {
   hero: {
     headline: "Helping clients build modern solutions.",
@@ -28,7 +57,7 @@ const FALLBACK_CONTENT: SiteContent = {
       "We help organizations move from fragile, legacy systems to secure, zero-trust architectures.",
     primaryCtaLabel: "Get in touch",
     primaryCtaHref: "/contact",
-    layoutVariant: "classic", // ← default
+    layoutVariant: "classic",
   },
   about: {
     title: "About Us",
@@ -52,22 +81,12 @@ const FALLBACK_CONTENT: SiteContent = {
     },
   ],
   careers: {
-    intro:
-      "We hire smart, self-directed people who thrive in modern cloud, security, and consulting environments.",
-    positions: [
-      {
-        title: "Software Engineer",
-        summary:
-          "Build modern cloud-native applications using Python, React, and DevSecOps best practices.",
-        tags: ["Cloud", "DevSecOps", "Backend", "Full-Stack"],
-      },
-      {
-        title: "General Application",
-        summary:
-          "If your skillset doesn’t fit a listed role, submit a general application.",
-        tags: ["General"],
-      },
-    ],
+    intro: {
+      headline:
+        "We hire smart, self-directed people who thrive in modern cloud, security, and consulting environments.",
+      subheadline: undefined,
+    },
+    positions: FALLBACK_POSITIONS,
   },
   contact: {
     intro: "Have questions or want to discuss a project? Send us a message.",
@@ -81,10 +100,56 @@ const FALLBACK_CONTENT: SiteContent = {
 function normalizeContent(raw: any): SiteContent {
   const src = raw ?? {};
   const rawHero = src.hero ?? {};
+  const rawCareers = src.careers ?? {};
+
+  // Handle intro being either a string (old) or an object (new)
+  let careersIntro = FALLBACK_CONTENT.careers.intro;
+  if (typeof rawCareers.intro === "string") {
+    careersIntro = {
+      headline: rawCareers.intro,
+      subheadline: undefined,
+    };
+  } else if (rawCareers.intro && typeof rawCareers.intro === "object") {
+    careersIntro = {
+      headline:
+        rawCareers.intro.headline ??
+        FALLBACK_CONTENT.careers.intro.headline,
+      subheadline:
+        rawCareers.intro.subheadline ??
+        FALLBACK_CONTENT.careers.intro.subheadline,
+    };
+  }
+
+  const normalizedPositions: CareerPosition[] = Array.isArray(
+    rawCareers.positions
+  )
+    ? rawCareers.positions.map((p: any, index: number): CareerPosition => {
+        const title = p.title ?? "Untitled role";
+
+        // generate an id if missing
+        const id =
+          p.id ||
+          `role-${index}-${String(title)
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/gi, "-")}`;
+
+        return {
+          id,
+          title,
+          summary: p.summary ?? "",
+          tags: Array.isArray(p.tags) ? p.tags : [],
+          team: p.team ?? "General",
+          location: p.location ?? "Remote (US)",
+          workMode: p.workMode ?? "remote",
+          level: p.level,
+          tagline: p.tagline,
+          salaryRange: p.salaryRange,
+        };
+      })
+    : FALLBACK_CONTENT.careers.positions;
 
   return {
     hero: {
-      // carry through any extra fields like layoutVariant, secondary CTA, etc.
       ...rawHero,
       headline: rawHero.headline ?? FALLBACK_CONTENT.hero.headline,
       subheadline: rawHero.subheadline ?? FALLBACK_CONTENT.hero.subheadline,
@@ -105,14 +170,8 @@ function normalizeContent(raw: any): SiteContent {
       ? src.services
       : FALLBACK_CONTENT.services,
     careers: {
-      intro: src.careers?.intro ?? FALLBACK_CONTENT.careers.intro,
-      positions: Array.isArray(src.careers?.positions)
-        ? src.careers.positions.map((p: any) => ({
-            title: p.title ?? "Untitled role",
-            summary: p.summary ?? "",
-            tags: Array.isArray(p.tags) ? p.tags : [],
-          }))
-        : FALLBACK_CONTENT.careers.positions,
+      intro: careersIntro,
+      positions: normalizedPositions,
     },
     contact: {
       intro: src.contact?.intro ?? FALLBACK_CONTENT.contact.intro,

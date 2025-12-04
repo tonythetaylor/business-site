@@ -1,10 +1,6 @@
 // src/pages/admin/AdminContentPage.tsx
 
-import {
-  useEffect,
-  useState,
-  type FormEvent,
-} from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useContent } from "../../contexts/ContentContext";
 import { updateContent } from "../../api/content";
@@ -12,6 +8,7 @@ import type {
   SiteContent,
   ServiceItem,
   CareerPosition,
+  CareersIntro,
 } from "../../api/content";
 
 const ADMIN_STORAGE_KEY = "adminApiKey";
@@ -38,7 +35,10 @@ export default function AdminContentPage() {
     }
   }, [content, draft]);
 
-  const handleHeroChange = (field: keyof SiteContent["hero"], value: string) => {
+  const handleHeroChange = (
+    field: keyof SiteContent["hero"],
+    value: string
+  ) => {
     if (!draft) return;
     setDraft({
       ...draft,
@@ -93,15 +93,18 @@ export default function AdminContentPage() {
   };
 
   // Careers intro
-  const handleCareersIntroChange = (value: string) => {
-    if (!draft) return;
-    setDraft({
-      ...draft,
-      careers: {
-        ...draft.careers,
-        intro: value,
-      },
-    });
+  const handleCareersIntroChange = (intro: CareersIntro) => {
+    setDraft((prev) =>
+      prev
+        ? {
+            ...prev,
+            careers: {
+              ...prev.careers,
+              intro,
+            },
+          }
+        : prev
+    );
   };
 
   // Careers positions
@@ -139,9 +142,14 @@ export default function AdminContentPage() {
   const addCareerPosition = () => {
     if (!draft) return;
     const newPosition: CareerPosition = {
-      title: "New Role",
-      summary: "Short description of this opportunity.",
-      tags: ["contract"],
+      id: `new-${Date.now()}`,
+      title: "New Position",
+      summary: "Short description of the role.",
+      tags: [],
+      team: "General",
+      location: "Remote (US)",
+      workMode: "remote",
+      // level / tagline / salaryRange optional
     };
     setDraft({
       ...draft,
@@ -243,9 +251,7 @@ export default function AdminContentPage() {
       {/* Left: editor form */}
       <form onSubmit={handleSave} className="space-y-6">
         <div className="flex items-center justify-between gap-4">
-          <h1 className="text-2xl font-bold tracking-tight">
-            Admin – Content
-          </h1>
+          <h1 className="text-2xl font-bold tracking-tight">Admin – Content</h1>
           <div className="flex gap-2 text-xs">
             <button
               type="button"
@@ -452,9 +458,14 @@ export default function AdminContentPage() {
               </label>
               <textarea
                 rows={3}
-                value={draft.careers.intro}
-                onChange={(e) => handleCareersIntroChange(e.target.value)}
-                className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-indigo-500 focus:ring-1 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50"
+                value={draft.careers.intro?.headline ?? ""}
+                onChange={(e) =>
+                  handleCareersIntroChange({
+                    ...draft.careers.intro,
+                    headline: e.target.value,
+                  })
+                }
+                className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm leading-6 text-slate-900 shadow-sm outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50"
               />
             </div>
 
@@ -481,11 +492,7 @@ export default function AdminContentPage() {
                     type="text"
                     value={position.title}
                     onChange={(e) =>
-                      handleCareerPositionChange(
-                        index,
-                        "title",
-                        e.target.value
-                      )
+                      handleCareerPositionChange(index, "title", e.target.value)
                     }
                     className="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-900 outline-none ring-indigo-500 focus:ring-1 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50"
                   />

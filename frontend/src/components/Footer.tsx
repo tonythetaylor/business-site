@@ -20,7 +20,7 @@ export default function Footer() {
       <div className={innerClass}>
         {/* Left side */}
         <p>
-          © {new Date().getFullYear()} Chattahoochee River Consulting LLC. All
+          © {new Date().getFullYear()} Brand Name LLC. All
           rights reserved.
         </p>
 

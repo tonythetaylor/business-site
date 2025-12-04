@@ -1,170 +1,183 @@
-import type { FC, ChangeEvent } from "react";
+// src/pages/careers/components/ApplicationForm.tsx
+import type { FC } from "react";
 import type { CareersFormState } from "../useCareersForm";
 
-interface ApplicationFormProps {
+type ApplicationFormProps = {
   form: CareersFormState;
-}
+};
 
 const ApplicationForm: FC<ApplicationFormProps> = ({ form }) => {
   const {
+    selectedRoles,
+    clearSelection,
+    sidebarOpen,
+    setSidebarOpen,
+
     fullName,
     email,
-    phone,
-    positionOther,
-    message,
-    websiteField,
-    status,
-    statusType,
-    submitting,
-    MAX_FILE_SIZE_MB,
+    link,
+    note,
     setFullName,
     setEmail,
-    setPhone,
-    setPositionOther,
-    setMessage,
-    setWebsiteField,
-    handleResumeChange,
+    setLink,
+    setNote,
+    setResumeFile,
+
+    submitting,
+    submitError,
+    submitSuccess,
     handleSubmit,
   } = form;
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-        Submit your application
-      </h2>
-      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-        One form, one resume, considered across multiple roles.
-      </p>
-
-      <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-        <div className="grid gap-4 md:grid-cols-2">
-          <div>
-            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
-              Full name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              required
-              autoComplete="name"
-              className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-indigo-500 focus:ring-1 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
-              Email <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoComplete="email"
-              className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-indigo-500 focus:ring-1 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
-              Phone (optional)
-            </label>
-            <input
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              autoComplete="tel"
-              className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-indigo-500 focus:ring-1 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
-              Other roles / areas of interest
-            </label>
-            <input
-              type="text"
-              value={positionOther}
-              onChange={(e) => setPositionOther(e.target.value)}
-              placeholder="e.g. Cloud, DevSecOps, SRE"
-              className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-indigo-500 focus:ring-1 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
-            Short introduction (optional)
-          </label>
-          <textarea
-            rows={3}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Share anything you want us to know that isn’t obvious from your resume."
-            className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-indigo-500 focus:ring-1 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-          />
-        </div>
-
-        <div>
-          <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
-            Resume (PDF, DOC, DOCX) <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="file"
-            accept=".pdf,.doc,.docx"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              handleResumeChange(e)
-            }
-            className="mt-1 w-full text-sm text-slate-700 file:mr-3 file:rounded-md file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-sm file:font-medium file:text-slate-800 hover:file:bg-slate-200 dark:text-slate-300 dark:file:bg-slate-800 dark:file:text-slate-100 dark:hover:file:bg-slate-700"
-          />
-          <p className="mt-1 text-[0.7rem] text-slate-500 dark:text-slate-400">
-            Max file size {MAX_FILE_SIZE_MB} MB. Please avoid including
-            government ID numbers, SSNs, or other sensitive personal data.
-          </p>
-        </div>
-
-        {/* Honeypot */}
-        <div className="hidden">
-          <label>
-            Website (leave this field empty)
-            <input
-              type="text"
-              value={websiteField}
-              onChange={(e) => setWebsiteField(e.target.value)}
-            />
-          </label>
-        </div>
-
-        {status && (
-          <p
-            className={`text-xs ${
-              statusType === "success"
-                ? "text-emerald-600 dark:text-emerald-400"
-                : "text-red-600 dark:text-red-400"
-            }`}
-          >
-            {status}
-          </p>
-        )}
-
+    <aside className="lg:sticky lg:top-24">
+      {/* mobile toggle */}
+      <div className="mb-3 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
         <button
-          type="submit"
-          disabled={submitting}
-          className="inline-flex items-center rounded-full bg-indigo-600 px-6 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 disabled:opacity-60 dark:bg-indigo-500 dark:hover:bg-indigo-400"
+          type="button"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="inline-flex items-center gap-1 rounded-full border border-slate-300 px-3 py-1 text-[0.75rem] text-slate-700 hover:border-sky-500 hover:text-sky-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-sky-500 dark:hover:text-sky-300"
         >
-          {submitting ? "Submitting…" : "Submit application"}
+          {sidebarOpen ? "Hide" : "Show"} selected roles
         </button>
-      </form>
-
-      <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-3 text-[0.7rem] text-slate-600 dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300">
-        <p className="font-semibold text-slate-700 dark:text-slate-200">
-          What happens after you submit
-        </p>
-        <p className="mt-1">
-          Your application goes directly to our review team. We’ll consider
-          you across the roles and areas you selected, and we’ll reach out
-          if there’s a strong match with current or upcoming work.
-        </p>
+        {selectedRoles.length > 0 && (
+          <span>{selectedRoles.length} selected</span>
+        )}
       </div>
-    </section>
+
+      {sidebarOpen && (
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 text-xs shadow-sm dark:border-slate-800 dark:bg-slate-900/85">
+          {/* Selected roles pills */}
+          <div className="flex items-center justify-between gap-2">
+            <div>
+              <h3 className="text-[0.8rem] font-semibold text-slate-900 dark:text-slate-50">
+                Selected roles
+              </h3>
+              <p className="mt-1 text-[0.7rem] text-slate-500 dark:text-slate-400">
+                Apply once and we will consider you across these roles.
+              </p>
+            </div>
+            {selectedRoles.length > 0 && (
+              <button
+                type="button"
+                onClick={clearSelection}
+                className="text-[0.7rem] text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+
+          <div className="mt-3 flex flex-wrap gap-2">
+            {selectedRoles.length === 0 ? (
+              <span className="rounded-full border border-dashed border-slate-300 px-3 py-1 text-[0.7rem] text-slate-500 dark:border-slate-700 dark:text-slate-500">
+                No roles selected yet.
+              </span>
+            ) : (
+              selectedRoles.map((role) => (
+                <span
+                  key={role.id}
+                  className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-[0.7rem] text-slate-800 dark:bg-slate-800 dark:text-slate-100"
+                >
+                  <span className="truncate max-w-40">{role.title}</span>
+                </span>
+              ))
+            )}
+          </div>
+
+          {/* Main apply-once form */}
+          <form onSubmit={handleSubmit} className="mt-5 space-y-3">
+            <p className="text-[0.7rem] text-slate-500 dark:text-slate-400">
+              We only need enough signal to start a conversation: your resume,
+              contact info, and a short note. Demographic questions (veteran
+              status, race, disability, etc.) only appear later if you are
+              selected for an interview, and they are always optional.
+            </p>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div>
+                <label className="mb-1 block text-[0.7rem] font-medium text-slate-700 dark:text-slate-300">
+                  Full name
+                </label>
+                <input
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-[0.75rem] text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50 dark:placeholder:text-slate-500"
+                  placeholder="Your name"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-[0.7rem] font-medium text-slate-700 dark:text-slate-300">
+                  Email
+                </label>
+                <input
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-[0.75rem] text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-[0.7rem] font-medium text-slate-700 dark:text-slate-300">
+                  Resume / CV
+                </label>
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setResumeFile(e.target.files?.[0] ?? null)
+                  }
+                  className="w-full cursor-pointer rounded-lg border border-dashed border-slate-300 bg-white px-3 py-2 text-[0.7rem] text-slate-500 file:mr-3 file:rounded-md file:border-0 file:bg-sky-600 file:px-2.5 file:py-1 file:text-[0.7rem] file:font-medium file:text-slate-950 hover:border-sky-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-400"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-[0.7rem] font-medium text-slate-700 dark:text-slate-300">
+                  Relevant link (GitHub, portfolio, LinkedIn)
+                </label>
+                <input
+                  className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-[0.75rem] text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50"
+                  placeholder="https://"
+                  value={link}
+                  onChange={(e) => setLink(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="mb-1 block text-[0.7rem] font-medium text-slate-700 dark:text-slate-300">
+                Brief note about why these roles and why now
+              </label>
+              <textarea
+                rows={4}
+                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-[0.75rem] text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50"
+                placeholder="Keep it short and real – we read every one."
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              />
+            </div>
+
+            {submitError && (
+              <p className="text-[0.7rem] text-red-500 dark:text-red-400">
+                {submitError}
+              </p>
+            )}
+            {submitSuccess && (
+              <p className="text-[0.7rem] text-emerald-600 dark:text-emerald-400">
+                Application submitted. We will follow up if there is a strong
+                match.
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={submitting || selectedRoles.length === 0}
+              className="inline-flex w-full items-center justify-center rounded-full bg-sky-600 px-4 py-2 text-[0.78rem] font-semibold text-slate-50 disabled:cursor-not-allowed disabled:opacity-40 hover:bg-sky-500 dark:bg-sky-500 dark:text-slate-950 dark:hover:bg-sky-400"
+            >
+              {submitting ? "Submitting…" : "Submit application"}
+            </button>
+          </form>
+        </div>
+      )}
+    </aside>
   );
 };
 

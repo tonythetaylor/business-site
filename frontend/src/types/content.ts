@@ -1,6 +1,9 @@
-// frontend/src/api/content.ts
-
-export type HomeLayoutVariant = "classic" | "sleek" | "blockchain" | "studio" | "river";
+export type HomeLayoutVariant =
+  | "classic"
+  | "sleek"
+  | "blockchain"
+  | "studio"
+  | "river";
 
 export interface HeroContent {
   headline: string;
@@ -28,14 +31,34 @@ export interface AboutContent {
   body: string[];
 }
 
+// Careers intro is now an object, not a string
+export interface CareersIntro {
+  headline: string;
+  subheadline?: string;
+}
+
+// This must match what your backend careers.positions returns
 export interface CareerPosition {
+  // Unique identifier
+  id: string;
+
+  // Core fields
   title: string;
   summary: string;
   tags: string[];
+
+  // Metadata
+  team: string; // e.g. "Engineering", "Security"
+  location: string; // e.g. "Remote (US)"
+  workMode: "remote" | "hybrid" | "onsite" | "other";
+
+  level?: string;       // "Senior", "Mid–Senior", etc.
+  tagline?: string;     // short pill under the title
+  salaryRange?: string; // "$140k–$180k USD"
 }
 
 export interface CareersContent {
-  intro: string;
+  intro: CareersIntro;
   positions: CareerPosition[];
 }
 

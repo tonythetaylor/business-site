@@ -18,7 +18,10 @@ export default function AdminCareersPage() {
     const position = { ...updated[index] };
 
     if (field === "tags") {
-      position.tags = value.split(",").map(t => t.trim()).filter(Boolean);
+      position.tags = value
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
     } else {
       (position as any)[field] = value;
     }
@@ -28,12 +31,20 @@ export default function AdminCareersPage() {
   };
 
   const addPosition = () => {
+    const newPosition: CareerPosition = {
+      id: `new-${Date.now()}`,
+      title: "New Position",
+      summary: "Short description of the role.",
+      tags: [],
+      team: "General",
+      location: "Remote (US)",
+      workMode: "remote",
+      // level / tagline / salaryRange are optional
+    };
+
     updateDraftField("careers", {
       ...careers,
-      positions: [
-        ...careers.positions,
-        { title: "New Role", summary: "Short summary", tags: ["contract"] },
-      ],
+      positions: [...careers.positions, newPosition],
     });
   };
 
@@ -52,11 +63,17 @@ export default function AdminCareersPage() {
         <label className="text-xs font-semibold">Intro</label>
         <textarea
           rows={3}
-          className="mt-1 w-full rounded-lg border p-2 bg-white dark:bg-slate-800"
-          value={careers.intro}
-          onChange={e =>
-            updateDraftField("careers", { ...careers, intro: e.target.value })
+          value={careers.intro?.headline ?? ""}
+          onChange={(e) =>
+            updateDraftField("careers", {
+              ...careers,
+              intro: {
+                ...careers.intro,
+                headline: e.target.value,
+              },
+            })
           }
+          className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm leading-6 text-slate-900 shadow-sm outline-none transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-50"
         />
       </section>
 
@@ -86,21 +103,21 @@ export default function AdminCareersPage() {
             <input
               className="w-full rounded-lg border p-2 bg-white dark:bg-slate-800"
               value={pos.title}
-              onChange={e => updatePosition(index, "title", e.target.value)}
+              onChange={(e) => updatePosition(index, "title", e.target.value)}
             />
 
             <textarea
               rows={2}
               className="w-full rounded-lg border p-2 bg-white dark:bg-slate-800"
               value={pos.summary}
-              onChange={e => updatePosition(index, "summary", e.target.value)}
+              onChange={(e) => updatePosition(index, "summary", e.target.value)}
             />
 
             <input
               className="w-full rounded-lg border p-2 bg-white dark:bg-slate-800"
               placeholder="comma separated tags"
               value={pos.tags.join(", ")}
-              onChange={e => updatePosition(index, "tags", e.target.value)}
+              onChange={(e) => updatePosition(index, "tags", e.target.value)}
             />
           </section>
         ))}

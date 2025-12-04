@@ -108,7 +108,7 @@ function RiverHero({
           <div className="space-y-7">
             <div className="inline-flex items-center gap-2 rounded-full border border-sky-100 bg-white/70 px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.18em] text-sky-700 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900/80 dark:text-sky-300">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              Chattahoochee River Consulting · Mission-aligned engineering
+              Brand Name · Mission-aligned engineering
             </div>
 
             <div className="space-y-4">

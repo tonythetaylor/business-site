@@ -90,7 +90,7 @@ function StudioHero({
           <div className="max-w-xl space-y-7">
             <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-slate-500 shadow-sm dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-300">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              Chattahoochee River Consulting
+              Brand Name
             </div>
 
             <div className="space-y-4">

@@ -23,8 +23,11 @@ import AdminServicesPage from "./pages/admin/AdminServicesPage";
 import type { JSX } from "react";
 
 function App() {
-  // tiny helper so we don’t repeat <Layout> everywhere
-  const withLayout = (page: JSX.Element) => <Layout>{page}</Layout>;
+  // helper so we don’t repeat <Layout>
+  const withLayout = (
+    page: JSX.Element,
+    options?: { noContainer?: boolean }
+  ) => <Layout noContainer={options?.noContainer}>{page}</Layout>;
 
   return (
     <Routes>
@@ -32,7 +35,13 @@ function App() {
       <Route path="/" element={withLayout(<HomePage />)} />
       <Route path="/about" element={withLayout(<AboutPage />)} />
       <Route path="/services" element={withLayout(<ServicesPage />)} />
-      <Route path="/careers" element={withLayout(<CareersPage />)} />
+
+      {/* Careers -> full-width page via noContainer */}
+      <Route
+        path="/careers"
+        element={withLayout(<CareersPage />, { noContainer: true })}
+      />
+
       <Route path="/contact" element={withLayout(<ContactPage />)} />
 
       {/* Admin auth – uses public Layout so it feels like a normal page */}
@@ -40,7 +49,6 @@ function App() {
 
       {/* Admin shell – full-width panel with its own layout + sidebar */}
       <Route path="/admin" element={<AdminLayout />}>
-        {/* Default admin route -> hero editor */}
         <Route index element={<AdminHeroPage />} />
         <Route path="hero" element={<AdminHeroPage />} />
         <Route path="about" element={<AdminAboutPage />} />

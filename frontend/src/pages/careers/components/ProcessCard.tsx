@@ -1,37 +1,33 @@
-import type { FC } from "react";
-
-const ProcessCard: FC = () => {
+// src/pages/careers/components/ProcessCard.tsx
+export default function ProcessCard() {
   return (
-    <div className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-300">
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-        How we review your application
-      </h2>
-      <ol className="list-decimal space-y-2 pl-4">
+    <section className="rounded-2xl border border-slate-200 bg-white p-5 text-sm shadow-sm dark:border-slate-800 dark:bg-slate-900/80 sm:p-6">
+      <p className="text-[0.75rem] font-semibold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
+        Our process
+      </p>
+      <ol className="mt-3 space-y-3 text-[0.85rem] text-slate-700 dark:text-slate-300">
         <li>
-          <span className="font-medium">You choose your scope.</span> Pick
-          one or more roles and describe your focus areas if you&apos;re
-          multi-disciplinary.
-        </li>
-        <li>
-          <span className="font-medium">We match, not you.</span> Our team
-          reviews your resume across those roles instead of asking you to
-          submit separate applications.
-        </li>
-        <li>
-          <span className="font-medium">
-            We follow up when there&apos;s a fit.
+          <span className="font-semibold text-slate-900 dark:text-slate-50">
+            1. One application, multiple roles.
           </span>{" "}
-          If your experience aligns with current or upcoming needs,
-          we&apos;ll reach out to schedule a conversation.
+          Pick the positions that speak to you. We will route your profile
+          where it makes the most sense.
+        </li>
+        <li>
+          <span className="font-semibold text-slate-900 dark:text-slate-50">
+            2. Real conversation.
+          </span>{" "}
+          We care about how you think through tradeoffs, structure systems, and
+          work with others – not trick questions.
+        </li>
+        <li>
+          <span className="font-semibold text-slate-900 dark:text-slate-50">
+            3. Mutual fit.
+          </span>{" "}
+          If it is not right on scope, timing, or mission, we will say that
+          plainly and keep you in mind for future work.
         </li>
       </ol>
-      <p className="pt-1 text-[0.7rem] text-slate-500 dark:text-slate-400">
-        Please do <span className="font-semibold">not</span> include
-        sensitive personal data (SSNs, government ID numbers, dates of
-        birth, etc.) in your resume or attachments.
-      </p>
-    </div>
+    </section>
   );
-};
-
-export default ProcessCard;
+}

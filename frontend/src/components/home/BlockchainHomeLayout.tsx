@@ -27,7 +27,7 @@ export default function BlockchainHomeLayout({
 
         <div className="relative px-6 py-10 sm:px-10 sm:py-14 lg:px-16 lg:py-16">
           <div className="flex flex-wrap items-center justify-between gap-4 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-slate-500 dark:text-slate-300">
-            <span>Chattahoochee River Consulting</span>
+            <span>Brand Name</span>
             <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400">
               <span className="hidden sm:inline">How it works</span>
               <span className="hidden sm:inline">Roadmap</span>
