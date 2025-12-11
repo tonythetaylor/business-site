@@ -1,7 +1,7 @@
 // src/components/home/showcase/ServicesShowcaseSection.tsx
 import type { RefObject } from "react";
 import type { SiteContent, ServiceItem } from "../../../api/content";
-import type { SectionId } from "./HomeShowcaseLayout";
+import { type SectionId } from "./sectionsConfig";
 
 type Props = {
   services: SiteContent["services"];

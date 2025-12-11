@@ -1,7 +1,7 @@
 // src/components/home/showcase/AboutShowcaseSection.tsx
 import type { RefObject } from "react";
 import type { SiteContent } from "../../../api/content";
-import type { SectionId } from "./HomeShowcaseLayout";
+import { type SectionId } from "./sectionsConfig";
 
 type Props = {
   about: SiteContent["about"];

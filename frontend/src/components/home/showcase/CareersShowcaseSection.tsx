@@ -1,6 +1,6 @@
 // src/components/home/showcase/CareersShowcaseSection.tsx
 import { useEffect, useState, type RefObject } from "react";
-import type { SectionId } from "./HomeShowcaseLayout";
+import { type SectionId } from "./sectionsConfig";
 
 type Props = {
   sectionRef: RefObject<HTMLElement | null>;
