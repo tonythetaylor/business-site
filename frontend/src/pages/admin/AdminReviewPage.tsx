@@ -13,7 +13,8 @@ import {
   ContentContext,
   type ContentContextValue,
 } from "../../contexts/ContentContext";
-import { updateContent } from "../../api/content";
+import { updateContent, type HomeLayoutVariant } from "../../api/content";
+import HomeLayoutSelector from "./components/HomeLayoutSelector";
 
 type PreviewTab = "home" | "about" | "services" | "careers" | "contact";
 
@@ -25,8 +26,10 @@ const TABS: { id: PreviewTab; label: string }[] = [
   { id: "contact", label: "Contact" },
 ];
 
+const DEFAULT_LAYOUT: HomeLayoutVariant = "classic";
+
 export default function AdminReviewPage() {
-  const { draft, loading, error } = useAdminDraft();
+  const { draft, loading, error, updateDraftField } = useAdminDraft();
   const [activeTab, setActiveTab] = useState<PreviewTab>("home");
 
   const [publishing, setPublishing] = useState(false);
@@ -57,7 +60,6 @@ export default function AdminReviewPage() {
     );
   }
 
-  // Use the draft as the "live" content for all previewed pages
   const previewContextValue: ContentContextValue = {
     content: draft,
     loading: false,
@@ -155,7 +157,6 @@ export default function AdminReviewPage() {
         <p className="text-xs text-red-600 dark:text-red-400">{publishError}</p>
       )}
 
-      {/* Tabs to switch between public pages */}
       <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 p-1 text-xs dark:border-slate-700 dark:bg-slate-900/70">
         {TABS.map((tab) => (
           <button
@@ -174,20 +175,29 @@ export default function AdminReviewPage() {
         ))}
       </div>
 
-      {/* Preview frame */}
       <div className="mt-3 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
         <div className="border-b border-slate-200 bg-slate-50 px-4 py-2 text-[0.7rem] text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
           Previewing:{" "}
           <span className="font-semibold capitalize">{activeTab}</span> page
         </div>
 
-        {/* Inject the draft into the normal ContentContext so pages render as if live */}
         <ContentContext.Provider value={previewContextValue}>
           <div className="min-h-[400px]">
             <Layout>{renderCurrentPage()}</Layout>
           </div>
         </ContentContext.Provider>
       </div>
+
+      {/* Home layout selector wired to draft.hero via updateDraftField */}
+      <HomeLayoutSelector
+        value={draft.hero.layoutVariant ?? DEFAULT_LAYOUT}
+        onChange={(next: string) =>
+          updateDraftField("hero", {
+            ...draft.hero,
+            layoutVariant: next as HomeLayoutVariant,
+          })
+        }
+      />
     </div>
   );
 }

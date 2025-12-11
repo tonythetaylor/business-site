@@ -10,12 +10,6 @@ import { useCareersForm } from "./useCareersForm";
 export default function CareersPage() {
   const { content, loading, error } = useContent();
 
-console.log(
-  "unique workModes from backend:",
-  Array.from(
-    new Set((content?.careers.positions ?? []).map((p: any) => p.workMode))
-  )
-);
   // We may not have content yet on the first render
   const careers = content?.careers;
 

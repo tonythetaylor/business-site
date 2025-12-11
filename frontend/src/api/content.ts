@@ -6,13 +6,17 @@ export type HomeLayoutVariant =
   | "sleek"
   | "blockchain"
   | "studio"
-  | "river";
+  | "river"
+  | "showcase";
 
 export interface HeroContent {
   headline: string;
   subheadline?: string;
   primaryCtaLabel?: string;
   primaryCtaHref?: string;
+
+  imageUrl?: string;          // main hero image
+  logoStrip?: string[];       // optional small client logos
 
   // New optional fields
   secondaryCtaLabel?: string;
@@ -27,11 +31,13 @@ export interface ServiceItem {
   description: string;
   // optional, used in the sleek layout card
   tagline?: string;
+  imageUrl?: string;          // optional service image/card art
 }
 
 export interface AboutContent {
   title: string;
   body: string[];
+  imageUrl?: string;          // optional about-photo / team image
 }
 
 // Matches what HeaderSection expects: intro.headline / intro.subheadline

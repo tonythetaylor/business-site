@@ -1,5 +1,6 @@
 import BlockchainHomeLayout from "../components/home/BlockchainHomeLayout";
 import ClassicHomeLayout from "../components/home/ClassicHomeLayout";
+import HomeShowcaseLayout from "../components/home/showcase/HomeShowcaseLayout";
 import RiverHomeLayout from "../components/home/RiverHomeLayout";
 import SleekHomeLayout from "../components/home/SleekHomeLayout";
 import StudioHomeLayout from "../components/home/StudioHomeLayout";
@@ -42,6 +43,8 @@ export default function HomePage() {
     <StudioHomeLayout hero={hero} services={services} />
   ) : layoutVariant === "river" ? (
     <RiverHomeLayout hero={hero} services={services} />
+  ) : layoutVariant === "showcase" ? (
+    <HomeShowcaseLayout content={content}/>
   ) : (
     <ClassicHomeLayout hero={hero} services={services} />
   );

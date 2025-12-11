@@ -1,6 +1,7 @@
 // src/pages/careers/useCareersForm.ts
-import { useMemo, useState } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import type { CareerPosition } from "../../api/content";
+import { submitApplication } from "../../api/careers";
 
 export type WorkMode = "remote" | "hybrid" | "onsite" | "other" | "";
 
@@ -130,35 +131,70 @@ export function useCareersForm(positions: CareerPosition[]): CareersFormState {
       setSelectedRoleIds((prev) => [...prev, id]);
     }
     setActiveApplyRoleId(id);
+    setSidebarOpen(true); // ensure the right panel is visible
   };
 
   const closeQuickApply = () => {
     setActiveApplyRoleId(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitError(null);
     setSubmitSuccess(false);
 
-    if (!fullName || !email || !resumeFile || selectedRoleIds.length === 0) {
-      setSubmitError(
-        "Please add your name, email, resume, and select at least one role."
-      );
+    if (!fullName.trim() || !email.trim()) {
+      setSubmitError("Please add your name and email.");
       return;
     }
 
-    setSubmitting(true);
+    if (!resumeFile) {
+      setSubmitError("Please attach a resume.");
+      return;
+    }
 
-    // Here you’d POST to your backend; mock for now
-    setTimeout(() => {
-      setSubmitting(false);
+    if (selectedRoleIds.length === 0) {
+      setSubmitError("Please select at least one role.");
+      return;
+    }
+
+    const positionValue =
+      selectedRoles.length > 0
+        ? selectedRoles.map((r) => r.title).join(", ")
+        : "General application";
+
+    // Fold link into the message so the backend sees it
+    const messageParts: string[] = [];
+    if (note.trim()) messageParts.push(note.trim());
+    if (link.trim()) messageParts.push(`Link: ${link.trim()}`);
+    const message = messageParts.join("\n\n");
+
+    try {
+      setSubmitting(true);
+
+      await submitApplication({
+        fullName: fullName.trim(),
+        email: email.trim(),
+        position: positionValue,
+        message: message || undefined,
+        resumeFile,
+      });
+
       setSubmitSuccess(true);
       setSubmitError(null);
 
-      // Soft reset, keep selectedRoles so they feel "saved"
+      // Soft reset – keep role selection but clear note/link if you want
       setNote("");
-    }, 800);
+      // setLink("");
+      // setResumeFile(null);
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error ? err.message : "Failed to submit application.";
+      setSubmitError(msg);
+      setSubmitSuccess(false);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return {

@@ -3,7 +3,8 @@ export type HomeLayoutVariant =
   | "sleek"
   | "blockchain"
   | "studio"
-  | "river";
+  | "river"
+  | "showcase";
 
 export interface HeroContent {
   headline: string;

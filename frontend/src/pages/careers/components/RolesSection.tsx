@@ -17,7 +17,7 @@ const WORK_MODES: { label: string; value: WorkMode | "all" }[] = [
 ];
 
 const RolesSection: FC<RolesSectionProps> = ({ positions, form }) => {
-  console.log(positions)
+  console.log(positions);
   const {
     search,
     teamFilter,
@@ -289,18 +289,18 @@ const RolesSection: FC<RolesSectionProps> = ({ positions, form }) => {
 
       {/* Details modal */}
       {detailsRole && (
-        <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/70 px-4">
-          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-700 bg-slate-950 p-5 text-sm shadow-xl">
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/40 px-4 backdrop-blur-sm dark:bg-slate-950/70">
+          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-white p-5 text-sm shadow-xl shadow-slate-900/10 dark:border-slate-700 dark:bg-slate-950">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h3 className="text-base font-semibold text-slate-50">
+                <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50">
                   {detailsRole.title}
                 </h3>
-                <p className="mt-1 text-xs text-slate-400">
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                   {detailsRole.team}
                   {detailsRole.level ? ` · ${detailsRole.level}` : ""}
                 </p>
-                <p className="mt-1 text-xs text-slate-400">
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                   {detailsRole.location} ·{" "}
                   {detailsRole.workMode === "remote"
                     ? "Remote"
@@ -311,7 +311,7 @@ const RolesSection: FC<RolesSectionProps> = ({ positions, form }) => {
                     : "Flexible"}
                 </p>
                 {detailsRole.salaryRange && (
-                  <p className="mt-1 text-xs text-slate-300">
+                  <p className="mt-1 text-xs text-slate-700 dark:text-slate-300">
                     {detailsRole.salaryRange}
                   </p>
                 )}
@@ -319,14 +319,14 @@ const RolesSection: FC<RolesSectionProps> = ({ positions, form }) => {
               <button
                 type="button"
                 onClick={() => setDetailsRole(null)}
-                className="text-xs text-slate-400 hover:text-slate-200"
+                className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
               >
                 Close
               </button>
             </div>
 
             {detailsRole.summary && (
-              <p className="mt-4 text-xs leading-relaxed text-slate-200">
+              <p className="mt-4 text-xs leading-relaxed text-slate-700 dark:text-slate-200">
                 {detailsRole.summary}
               </p>
             )}
@@ -336,7 +336,7 @@ const RolesSection: FC<RolesSectionProps> = ({ positions, form }) => {
                 {detailsRole.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full bg-slate-800 px-2 py-0.5 text-[0.65rem] text-slate-200"
+                    className="rounded-full bg-slate-100 px-2 py-0.5 text-[0.65rem] text-slate-700 dark:bg-slate-800 dark:text-slate-200"
                   >
                     {tag}
                   </span>
@@ -351,7 +351,7 @@ const RolesSection: FC<RolesSectionProps> = ({ positions, form }) => {
                   toggleRole(detailsRole.id);
                   setDetailsRole(null);
                 }}
-                className="inline-flex items-center rounded-full bg-sky-500 px-3 py-1 text-[0.75rem] font-medium text-slate-950 hover:bg-sky-400"
+                className="inline-flex items-center rounded-full bg-sky-600 px-3 py-1 text-[0.75rem] font-medium text-slate-50 hover:bg-sky-500"
               >
                 {selectedRoleIds.includes(detailsRole.id)
                   ? "Remove from selected"
@@ -360,7 +360,7 @@ const RolesSection: FC<RolesSectionProps> = ({ positions, form }) => {
               <button
                 type="button"
                 onClick={() => setDetailsRole(null)}
-                className="text-[0.75rem] text-slate-400 hover:text-slate-200"
+                className="text-[0.75rem] text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
               >
                 Close
               </button>

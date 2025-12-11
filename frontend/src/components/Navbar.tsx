@@ -62,7 +62,7 @@ export default function Navbar() {
 
   // Full-width chrome only for these variants
   const isFullWidth =
-    layoutVariant === "blockchain" || layoutVariant === "studio";
+    layoutVariant === "blockchain" || layoutVariant === "studio" || layoutVariant === "showcase";
 
   const innerClass = isFullWidth
     ? "flex w-full items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8"
